@@ -1,83 +1,89 @@
 import React, {Component} from 'react'
 import Loader from './Loader/Loader'
 import Table from "./Table/Table";
-import _ from 'lodash'
 import DetailRowView from "./DetailRowView/DetailRowView";
 
 class App extends Component {
-
     data = {
         columns: [{ // has N elements (N columns)
-            title: "id",
             type: "number",
             filtering: true, // has filtering input
             sorting: true, // has sorting arrows
             style: {} // css styles
         }, { // has N elements (N columns)
-            title: "First Name",
             type: "string",
             filtering: true, // has filtering input
             sorting: false, // has sorting arrows
             style: {} // css styles
         }, { // has N elements (N columns)
-            title: "Last Name",
             type: "string",
             filtering: true, // has filtering input
             sorting: false, // has sorting arrows
             style: {} // css styles
         }, { // has N elements (N columns)
-            title: "email",
             type: "string",
             filtering: false, // has filtering input
-            sorting: false, // has sorting arrows
+            sorting: true, // has sorting arrows
             style: {} // css styles
         }],
         cells: [{
+            value: "id",
+            style: {}
+        }, {
+            value: 'First Name',
+            style: {}
+        }, {
+            value: 'Last Name',
+            style: {}
+        }, {
+            value: 'Email',
+            style: {}
+        }, {
             value: 1,
             style: {}
-        },{
+        }, {
             value: 'John',
             style: {}
-        },{
+        }, {
             value: 'Doe',
             style: {}
-        },{
-            value: 'Doe@gmail.com',
+        }, {
+            value: '1Doe@gmail.com',
             style: {}
-        },{
+        }, {
             value: 2,
             style: {}
-        },{
+        }, {
             value: 'John2',
             style: {}
-        },{
+        }, {
             value: 'Doe2',
             style: {}
-        },{
-            value: 'Doe@gmail.com',
+        }, {
+            value: '2Doe@gmail.com',
             style: {}
-        },{
+        }, {
             value: 3,
             style: {}
-        },{
+        }, {
             value: 'John3',
             style: {}
-        },{
+        }, {
             value: 'Doe3',
             style: {}
-        },{
+        }, {
             value: 'Doe@gmail.com',
             style: {}
-        },{
+        }, {
             value: 4,
             style: {}
-        },{
+        }, {
             value: 'John4',
             style: {}
-        },{
+        }, {
             value: 'Doe4',
             style: {}
-        },{
+        }, {
             value: 'Doe@gmail.com',
             style: {}
         }]
@@ -85,9 +91,9 @@ class App extends Component {
 
     state = {
         isLoading: false,
-        data: this.data,
+        data: null,
         sort: 'asc', //desc
-        sortField: 'id',
+        sortField: 0,
         row: null
     }
 
@@ -105,23 +111,53 @@ class App extends Component {
     //     })
     // }
 
-    onSort = sortField => {
-        const clonedData = this.state.data.concat(); //копіюємо масив
+    constructor(props) {
+        super(props);
+        this.transformData();
+    }
+
+    onSort = sortFieldIndex => {
+        const clonedData = this.state.data.table.concat(); //копіюємо масив
         const sortType = this.state.sort === 'asc' ? 'desc' : 'asc' //міняємо варіант сортування
 
-        const orderedData = _.orderBy(clonedData, sortField, sortType);
+        clonedData.sort((a, b) => {
+            const reverse = sortType === 'asc' ? 1 : -1;
+            if (a[sortFieldIndex].value > b[sortFieldIndex].value) return reverse;
+            if (a[sortFieldIndex].value < b[sortFieldIndex].value) return -reverse;
+            return 0;
+
+        });
 
         this.setState({
-            data: orderedData,
+            data: {
+                ...this.state.data,
+                table: clonedData
+            },
             sort: sortType,
-            sortField
-
+            sortField: sortFieldIndex
         })
 
     }
 
     onRowSelect = row => {
         this.setState({row});
+    }
+
+    transformData() {
+        const cells = this.data.cells;
+        const columns = this.data.columns;
+        const columnsCount = this.data.columns.length;
+        const rowsCount = Math.ceil(cells.length / columns.length);
+        let table = [];
+        for (let i = 0; i < rowsCount; i++) {
+            table.push(cells.slice(i * columnsCount, (i + 1) * columnsCount))
+        }
+
+        this.state.data = {
+            table,
+            head: table.shift(),
+            columns: this.data.columns
+        };
     }
 
 

@@ -1,26 +1,39 @@
 import React from 'react'
 
-export default props => (
-    <table className="table">
-        <thead>
-        <tr>
-            <td onClick={props.onSort.bind(null, 'id')}>ID{(props.sortField === 'id') ? props.sort === 'asc' ? <span>&darr;</span> : <span>&uarr;</span> : null}</td>
-            <td onClick={props.onSort.bind(null, 'firstName')}>First Name{props.sortField === 'firstName' ? props.sort === 'asc' ? <span>&darr;</span> : <span>&uarr;</span> : null}</td>
-            <td onClick={props.onSort.bind(null, 'lastName')}>Last Name{props.sortField === 'lastName' ? props.sort === 'asc' ? <span>&darr;</span> : <span>&uarr;</span> : null}</td>
-            <td onClick={props.onSort.bind(null, 'email')}>email{props.sortField === 'email' ? props.sort === 'asc' ? <span>&darr;</span> : <span>&uarr;</span> : null}</td>
-            <td onClick={props.onSort.bind(null, 'phone')}>phone{props.sortField === 'phone' ? props.sort === 'asc' ? <span>&darr;</span> : <span>&uarr;</span> : null}</td>
-        </tr>
-        </thead>
-            <tbody>
-            {new Array(Math.ceil(props.data.cells.length / props.data.columns.length)).fill(0).forEach((v, index) => (
+export default props => {
+    const table = props.data.table;
+    const head = props.data.head;
 
-                <tr key={props.data.cells[props.data.columns.length * index].id} onClick={props.onRowSelect.bind(null, props.data.cells[props.data.columns.length * index])}>
-                    {props.data.cells.map((item, index) => (
-                        <td>{item.value}</td>
-                ))}
+    const sortFuncView = () => props.sort === 'asc' ?
+        <span>&darr;</span> : <span>&uarr;</span>;
+
+    const sortFunc = (index) => {
+        if (props.data.columns[index].sorting) {
+            return props.onSort.bind(null, index);
+        }
+    };
+
+    return (
+        <table className="table">
+            <thead>
+            <tr>
+                {
+                    head.map((val, index) => (
+                        <td onClick={sortFunc(index)} key={index}>{val.value}{(props.sortField === index) ? sortFuncView() : null}</td>
+                    ))
+                }
+            </tr>
+            </thead>
+            <tbody>
+            {
+                table.map((row, index) =>
+                <tr key={index} >
+                    {row.map(cell =>
+                        <td key={cell.value} >{cell.value}</td>
+                    )}
                 </tr>
-            ))
-            }
+            )}
             </tbody>
-    </table>
-)
+        </table>
+    )
+}
