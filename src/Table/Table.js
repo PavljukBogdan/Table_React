@@ -14,12 +14,12 @@ export default props => {
     };
 
     return (
-        <table className="table">
+        <table className="table" border = "1">
             <thead>
             <tr>
                 {
                     head.map((val, index) => (
-                        <td onClick={sortFunc(index)} key={index}>{val.value}{(props.sortField === index) ? sortFuncView() : null}</td>
+                        <th onClick={sortFunc(index)} key={index}>{val.value}{(props.sortField === index) ? sortFuncView() : null}</th>
                     ))
                 }
             </tr>

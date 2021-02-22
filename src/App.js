@@ -5,26 +5,26 @@ import DetailRowView from "./DetailRowView/DetailRowView";
 
 class App extends Component {
     data = {
-        columns: [{ // has N elements (N columns)
+        columns: [{
             type: "number",
-            filtering: true, // has filtering input
-            sorting: true, // has sorting arrows
-            style: {} // css styles
-        }, { // has N elements (N columns)
+            filtering: true,
+            sorting: true,
+            style: {}
+        }, {
             type: "string",
-            filtering: true, // has filtering input
-            sorting: false, // has sorting arrows
-            style: {} // css styles
-        }, { // has N elements (N columns)
+            filtering: true,
+            sorting: false,
+            style: {}
+        }, {
             type: "string",
-            filtering: true, // has filtering input
-            sorting: false, // has sorting arrows
-            style: {} // css styles
-        }, { // has N elements (N columns)
+            filtering: true,
+            sorting: false,
+            style: {}
+        }, {
             type: "string",
-            filtering: false, // has filtering input
-            sorting: true, // has sorting arrows
-            style: {} // css styles
+            filtering: false,
+            sorting: true,
+            style: {}
         }],
         cells: [{
             value: "id",
@@ -72,7 +72,7 @@ class App extends Component {
             value: 'Doe3',
             style: {}
         }, {
-            value: 'Doe@gmail.com',
+            value: '3Doe@gmail.com',
             style: {}
         }, {
             value: 4,
@@ -84,7 +84,7 @@ class App extends Component {
             value: 'Doe4',
             style: {}
         }, {
-            value: 'Doe@gmail.com',
+            value: '4Doe@gmail.com',
             style: {}
         }]
     }
@@ -96,20 +96,6 @@ class App extends Component {
         sortField: 0,
         row: null
     }
-
-    // async componentDidMount() {
-    //     const response = await fetch('http://www.filltext.com/?rows=32&id={number|1000}&' +
-    //         'firstName={firstName}&' +
-    //         'lastName={lastName}&email={email}&' +
-    //         'phone={phone|(xxx)xxx-xx-xx}&' +
-    //         'address={addressObject}&description={lorem|32}')
-    //     const data = await response.json(); //отримуємо файли в json
-    //
-    //     this.setState({
-    //         isLoading: false,
-    //         data: _.orderBy(data, this.state.sortField, this.state.sort)
-    //     })
-    // }
 
     constructor(props) {
         super(props);
